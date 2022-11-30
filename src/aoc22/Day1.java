@@ -14,6 +14,6 @@ public class Day1 {
 
     public void run1 () {
 
-        System.out.println(inputData);
+        inputData.stream().forEach(System.out::println);
     }
 }
