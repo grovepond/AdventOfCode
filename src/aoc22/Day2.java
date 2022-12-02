@@ -107,28 +107,4 @@ public class Day2 {
         return "Total score is " + totalScore;
     }
 
-    /*
-    private int calculateRowScore (String line) {
-        int ownHandValue = 0;
-        String ownHand = line.split(" ")[1];
-
-        switch (ownHand) {
-            case "X":
-                ownHandValue = 1;
-                break;
-            case "Y":
-                ownHandValue = 2;
-                break;
-            case "Z":
-                ownHandValue = 3;
-                break;
-            default:
-                break;
-        }
-
-        return winningHands.contains(line) ? SCORE_WIN + ownHandValue : (losingHands.contains(line) ? SCORE_LOSS + ownHandValue : SCORE_DRAW + ownHandValue);
-
-    }
-    */
-
 }
