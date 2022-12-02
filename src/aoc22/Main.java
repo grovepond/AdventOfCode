@@ -5,6 +5,8 @@ public class Main {
         Day2 day = new Day2();
         System.out.println(day.run1());
         System.out.println(day.run2());
+        System.out.println(day.run1Alt());
+        System.out.println(day.run2Alt());
 
     }
 }

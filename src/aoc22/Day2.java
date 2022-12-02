@@ -2,7 +2,9 @@ package aoc22;
 
 import util.InputUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Day2 {
 
@@ -106,5 +108,47 @@ public class Day2 {
         }
         return "Total score is " + totalScore;
     }
+
+    public String run1Alt () {
+
+
+        int totalScore = 0;
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("A X", 4);
+        scores.put("A Y", 8);
+        scores.put("A Z", 3);
+        scores.put("B X", 1);
+        scores.put("B Y", 5);
+        scores.put("B Z", 9);
+        scores.put("C X", 7);
+        scores.put("C Y", 2);
+        scores.put("C Z", 6);
+
+        for (String line : input) {
+            totalScore += scores.get(line);
+        }
+        return "Total score is " + totalScore;
+    }
+
+    public String run2Alt () {
+
+        int totalScore = 0;
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("A X", 3);
+        scores.put("A Y", 4);
+        scores.put("A Z", 8);
+        scores.put("B X", 1);
+        scores.put("B Y", 5);
+        scores.put("B Z", 9);
+        scores.put("C X", 2);
+        scores.put("C Y", 6);
+        scores.put("C Z", 7);
+
+        for (String line : input) {
+            totalScore += scores.get(line);
+        }
+        return "Total score is " + totalScore;
+    }
+
 
 }
