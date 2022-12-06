@@ -19,11 +19,13 @@ public class Day6 {
     }
 
     public String run2 () {
-        return "First distinct sequence of four is at " + findFirstDistinct(14);
+        return "First distinct sequence of fourteen is at " + findFirstDistinct(14);
     }
 
     private  int findFirstDistinct(int len) {
-        List<Character> chars = input.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+        List<Character> chars = input.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
         return IntStream.rangeClosed(len, input.length())
                 .filter(i -> new HashSet<>(chars.subList(i - len, i)).size() == len)
                 .findFirst()
