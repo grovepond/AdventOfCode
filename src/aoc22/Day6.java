@@ -4,6 +4,7 @@ import util.InputUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Day6 {
 
@@ -20,37 +21,26 @@ public class Day6 {
     public String run1 () {
 
 
-        return "First distinct sequence of four is at " + findDistinct(4);
+        return "First distinct sequence of four is at " + findFirstDistinct(4);
 
     }
 
     public String run2 () {
 
-        return "First distinct sequence of four is at " + findDistinct(14);
+        return "First distinct sequence of four is at " + findFirstDistinct(14);
 
     }
 
 
 
-    private int findDistinct (int length) {
-        char [] chars = input.toCharArray();
-        int ix = 0;
 
-        Set<Character> set = new HashSet<>();
-        for (int i = 0; i < chars.length; i++) {
-            for (int j = ix; j < chars.length; j++) {
-                if (set.contains(chars[j])) {
-                    set.clear();
-                    ix++;
-                    break;
-                } else {
-                    set.add(chars[j]);
-                    if (length == set.size())
-                        return (j + 1);
-                }
-            }
-        }
-        return 0;
+    private  int findFirstDistinct(int len) {
+        List<Character> chars = input.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+        return IntStream.rangeClosed(len, input.length())
+                .filter(i -> new HashSet<>(chars.subList(i - len, i)).size() == len)
+                .findFirst().orElseThrow();
+
+
     }
 
 }
