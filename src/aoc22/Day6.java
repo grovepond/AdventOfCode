@@ -3,6 +3,7 @@ package aoc22;
 import util.InputUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Day6 {
 
@@ -36,10 +37,11 @@ public class Day6 {
         int ix = 0;
 
         Set<Character> set = new HashSet<>();
-        while (ix < chars.length) {
+        for (int i = 0; i < chars.length; i++) {
             for (int j = ix; j < chars.length; j++) {
                 if (set.contains(chars[j])) {
                     set.clear();
+                    ix++;
                     break;
                 } else {
                     set.add(chars[j]);
@@ -50,6 +52,5 @@ public class Day6 {
         }
         return 0;
     }
-
 
 }
