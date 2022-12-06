@@ -29,7 +29,7 @@ public class Day6 {
         return IntStream.rangeClosed(len, input.length())
                 .filter(i -> new HashSet<>(chars.subList(i - len, i)).size() == len)
                 .findFirst()
-                .orElseThrow();
+                .orElse(-1);
     }
 
 }
