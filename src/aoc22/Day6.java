@@ -26,7 +26,8 @@ public class Day6 {
         List<Character> chars = input.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
         return IntStream.rangeClosed(len, input.length())
                 .filter(i -> new HashSet<>(chars.subList(i - len, i)).size() == len)
-                .findFirst().orElseThrow();
+                .findFirst()
+                .orElseThrow();
     }
 
 }
