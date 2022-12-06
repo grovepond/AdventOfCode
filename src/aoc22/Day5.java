@@ -18,7 +18,29 @@ public class Day5 {
         input = InputUtil.getInputAsStringList(this.getClass().getSimpleName().toLowerCase() + ".txt");
     }
 
+    public String run1 () {
+        List<String> lines = parseInput();
+        for (String line : lines) {
+            String[] split = line.split(" ");
 
+            int numberOfMoves = Integer.parseInt(split[0]);
+            int moveFrom = Integer.parseInt(split[2]) - 1;
+            int moveTo = Integer.parseInt(split[4]) - 1;
+
+            for (int i = 0; i < numberOfMoves; i++) {
+                if (crates[moveFrom].size() > 0) {
+                    Object c = crates[moveFrom].remove(crates[moveFrom].size() - 1);
+                    crates[moveTo].add(c);
+                }
+            }
+        }
+        StringBuilder topCrates = new StringBuilder();
+        for (List<Character> crate : crates) {
+            topCrates.append(crate.get(crate.size() - 1));
+        }
+
+        return "The top crates are " + topCrates;
+    }
 
     public String run2 () {
         List<String> lines = parseInput();
@@ -50,29 +72,7 @@ public class Day5 {
     }
 
 
-    public String run1 () {
-        List<String> lines = parseInput();
-        for (String line : lines) {
-            String[] split = line.split(" ");
 
-            int numberOfMoves = Integer.parseInt(split[0]);
-            int moveFrom = Integer.parseInt(split[2]) - 1;
-            int moveTo = Integer.parseInt(split[4]) - 1;
-
-            for (int i = 0; i < numberOfMoves; i++) {
-                if (crates[moveFrom].size() > 0) {
-                    Object c = crates[moveFrom].remove(crates[moveFrom].size() - 1);
-                    crates[moveTo].add(c);
-                }
-            }
-        }
-        StringBuilder topCrates = new StringBuilder();
-        for (List<Character> crate : crates) {
-            topCrates.append(crate.get(crate.size() - 1));
-        }
-
-        return "The top crates are " + topCrates;
-    }
 
     public List<String> parseInput() {
         List<String> moves = new ArrayList<>();
