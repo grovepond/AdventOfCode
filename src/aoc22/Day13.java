@@ -7,9 +7,6 @@ import java.util.List;
 public class Day13 {
 
     private final List<String> input;
-    //5196
-    //22134
-
 
     public Day13() {
         input = InputUtil.getInputAsStringList(this.getClass().getSimpleName().toLowerCase() + ".txt");
