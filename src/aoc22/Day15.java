@@ -7,7 +7,6 @@ import java.util.*;
 public class Day15 {
 
     private final List<String> input;
-    private final int scanRow = 2000000;
 
     public Day15() {
         input = InputUtil.getInputAsStringList(this.getClass().getSimpleName().toLowerCase() + ".txt");
@@ -15,6 +14,9 @@ public class Day15 {
 
     public String run1 () {
         var sensors = parseInput();
+        for (var s : sensors) {
+            s.setCovered(2000000);
+        }
         return ("Covered: " + findCoveredPointsOnRow(sensors).size());
     }
 
@@ -69,10 +71,9 @@ public class Day15 {
         }
     }
 
-    class Sensor {
+    static class Sensor {
         Coordinate coordinate;
         int distanceToClosestBeacon;
-        int offsetXOnY;
 
         Set<Coordinate> covered;
         public Sensor (int x, int y, int bx, int by) {
@@ -80,14 +81,19 @@ public class Day15 {
             this.coordinate.x = x;
             this.coordinate.y = y;
             this.distanceToClosestBeacon = getDistanceToCoord(bx, by);
-            this.offsetXOnY = this.distanceToClosestBeacon - Math.abs(this.coordinate.y - scanRow);
-            this.covered = calculateCovered();
+
         }
 
-        Set<Coordinate> calculateCovered() {
+        public void setCovered(int row) {
+            int offset = this.distanceToClosestBeacon - Math.abs(this.coordinate.y - row);
+            this.covered = calculateCovered(row, offset);
+        }
+
+
+        public Set<Coordinate> calculateCovered(int row, int offset) {
             Set<Coordinate> coordinates = new HashSet<>();
-            for (int i = this.coordinate.x - this.offsetXOnY; i < this.coordinate.x + this.offsetXOnY; i++) {
-                        coordinates.add(new Coordinate(i, scanRow));
+            for (int i = this.coordinate.x - offset; i < this.coordinate.x + offset; i++) {
+                        coordinates.add(new Coordinate(i, row));
                 }
 
             return coordinates;
@@ -102,7 +108,6 @@ public class Day15 {
             return "Sensor{" +
                     "point=" + coordinate +
                     ", distanceToClosestBeacon=" + distanceToClosestBeacon +
-                    ", coveredForRow=" + offsetXOnY +
                     '}';
         }
 
