@@ -3,10 +3,13 @@ package aoc22;
 import util.InputUtil;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Day15 {
-
+//    Covered: 4737567
+//    Frequency: 13267474686239
     private final List<String> input;
+    private final static int min = 0, max = 4000000;
 
     public Day15() {
         input = InputUtil.getInputAsStringList(this.getClass().getSimpleName().toLowerCase() + ".txt");
@@ -21,8 +24,42 @@ public class Day15 {
     }
 
     public String run2 () {
+        var sensors = parseInput();
+        Range cave = new Range(min, max);
+        Coordinate c = null;
+        for (Sensor sensor : sensors) {
+            var north = new Coordinate(sensor.coordinate.x, sensor.coordinate.y - sensor.distanceToClosestBeacon - 1);
+            var south = new Coordinate(sensor.coordinate.x, sensor.coordinate.y + sensor.distanceToClosestBeacon + 1);
+            var west = new Coordinate(sensor.coordinate.x - sensor.distanceToClosestBeacon - 1, sensor.coordinate.y);
+            var east = new Coordinate(sensor.coordinate.x + sensor.distanceToClosestBeacon + 1, sensor.coordinate.y);
 
-        return "";
+            List<Coordinate> points = new ArrayList<>();
+            points.addAll(north.lineTo(east));
+            points.addAll(east.lineTo(south));
+            points.addAll(south.lineTo(west));
+            points.addAll(west.lineTo(north));
+
+            for (Coordinate point : points) {
+                if (cave.contains(point.getX()) && cave.contains(point.getY())) {
+                    boolean isInRange = false;
+                    for (Sensor s : sensors) {
+                        if (s.isInRange(point)) {
+                            isInRange = true;
+                            break;
+                        }
+                    }
+                    if (!isInRange) {
+                        c = point;
+                        break;
+                    }
+                }
+            }
+            if (c != null) {
+                break;
+            }
+        }
+        assert c != null;
+        return "Frequency: " + (c.x * 4000000L + c.y);
     }
 
     private List<Sensor> parseInput() {
@@ -49,6 +86,25 @@ public class Day15 {
             this.y = y;
         }
 
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public int distanceToOther (Coordinate other) {
+            return Math.abs(this.x - other.x) + Math.abs(y - other.y);
+        }
+        public List<Coordinate> lineTo(Coordinate other) {
+            int xDelta = Integer.signum(other.getX() - this.getX());
+            int yDelta = Integer.signum(other.getY() - this.getY());
+            int steps = Math.max(Math.abs(this.getX() - other.getX()), Math.abs(this.getY() - other.getY()));
+            return IntStream.rangeClosed(1, steps)
+                    .mapToObj(i -> new Coordinate(this.getX() + xDelta * i, this.getY() + yDelta * i))
+                    .toList();
+        }
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -84,6 +140,9 @@ public class Day15 {
 
         }
 
+        public boolean isInRange(Coordinate other) {
+            return this.coordinate.distanceToOther(other) <= this.distanceToClosestBeacon;
+        }
         public void setCovered(int row) {
             int offset = this.distanceToClosestBeacon - Math.abs(this.coordinate.y - row);
             this.covered = calculateCovered(row, offset);
@@ -124,6 +183,17 @@ public class Day15 {
             coordinates.addAll(s.covered);
         }
         return coordinates;
+    }
+
+    static class Range {
+        int start, end;
+        public Range (int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+        public boolean contains (int pos) {
+            return this.start <= pos && pos <= this.end;
+        }
     }
 
 }

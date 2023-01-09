@@ -4,5 +4,6 @@ public class Main {
         Day15 day = new Day15();
         System.out.println(day.run1());
         System.out.println(day.run2());
+
     }
 }
