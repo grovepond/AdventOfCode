@@ -25,7 +25,7 @@ public class Day15 {
 
     public String run2 () {
         var sensors = parseInput();
-        Range cave = new Range(min, max);
+        Range range = new Range(min, max);
         Coordinate c = null;
         for (Sensor sensor : sensors) {
             var north = new Coordinate(sensor.coordinate.x, sensor.coordinate.y - sensor.distanceToClosestBeacon - 1);
@@ -33,32 +33,22 @@ public class Day15 {
             var west = new Coordinate(sensor.coordinate.x - sensor.distanceToClosestBeacon - 1, sensor.coordinate.y);
             var east = new Coordinate(sensor.coordinate.x + sensor.distanceToClosestBeacon + 1, sensor.coordinate.y);
 
-            List<Coordinate> points = new ArrayList<>();
-            points.addAll(north.lineTo(east));
-            points.addAll(east.lineTo(south));
-            points.addAll(south.lineTo(west));
-            points.addAll(west.lineTo(north));
+            Set<Coordinate> coords = new HashSet<>();
+            coords.addAll(north.lineTo(east));
+            coords.addAll(east.lineTo(south));
+            coords.addAll(south.lineTo(west));
+            coords.addAll(west.lineTo(north));
 
-            for (Coordinate point : points) {
-                if (cave.contains(point.getX()) && cave.contains(point.getY())) {
-                    boolean isInRange = false;
-                    for (Sensor s : sensors) {
-                        if (s.isInRange(point)) {
-                            isInRange = true;
-                            break;
-                        }
-                    }
-                    if (!isInRange) {
-                        c = point;
-                        break;
-                    }
-                }
-            }
+            c = coords.stream()
+                    .filter(coord -> range.contains(coord.getX()) && range.contains(coord.getY()))
+                    .filter(coord -> sensors.stream().noneMatch(s -> s.isInRange(coord)))
+                    .findFirst()
+                    .orElse(null);
             if (c != null) {
                 break;
             }
         }
-        assert c != null;
+        assert (c != null);
         return "Frequency: " + (c.x * 4000000L + c.y);
     }
 
